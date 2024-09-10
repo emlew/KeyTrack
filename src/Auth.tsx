@@ -1,14 +1,14 @@
 import logo from "/KeyTrackLogo.svg";
 
-export const App: React.FC = () => {
+export const Auth: React.FC = () => {
   return (
     <>
       <div>
         <img src={logo} alt="KeyTrack logo" />
       </div>
-      <h1>KeyTrack: Coming Soon</h1>
+      <h1>Login page</h1>
     </>
   );
 };
 
-export default App;
+export default Auth;

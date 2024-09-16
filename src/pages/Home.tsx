@@ -1,18 +1,19 @@
-import { useSupabaseClient } from "@/hooks";
+import { useSupabaseClient, useUserData } from "@/hooks";
 import { Button, Typography } from "@mui/material";
 
 export const HomePage: React.FC = () => {
   const supabase = useSupabaseClient();
+  const user = useUserData();
 
   const logout = async () => {
-    // TODO handle sign in and sign out errors
-    // const { error } = await supabase.auth.signOut();
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error(error);
   };
 
   return (
     <>
       <Typography>Home Page</Typography>
+      {user && <Typography>{"Hello " + user.email}</Typography>}
       <Button variant="contained" onClick={logout}>
         Log out
       </Button>

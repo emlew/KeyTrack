@@ -1,3 +1,4 @@
+import { Button, Typography } from "@mui/material";
 import { useSupabaseClient } from "./hooks";
 import logo from "/KeyTrackLogo.svg";
 
@@ -14,11 +15,11 @@ export const Auth: React.FC = () => {
 
   return (
     <>
-      <div>
-        <img src={logo} alt="KeyTrack logo" />
-      </div>
-      <h1>Login page</h1>
-      <button onClick={login}>Login</button>
+      <img src={logo} alt="KeyTrack logo" />
+      <Typography>Login page</Typography>
+      <Button variant={"contained"} onClick={login}>
+        Login
+      </Button>
     </>
   );
 };

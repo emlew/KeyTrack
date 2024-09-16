@@ -4,6 +4,7 @@ import { Session } from "@supabase/supabase-js";
 import { AppRouter } from "./AppRouter";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useSupabaseClient } from "@/hooks";
+import { Box } from "@mui/material";
 
 export const App: React.FC = () => {
   const supabase = useSupabaseClient();
@@ -24,7 +25,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
+    <Box>
       {!session ? (
         <Auth />
       ) : (
@@ -32,7 +33,7 @@ export const App: React.FC = () => {
           <AppRouter />
         </Router>
       )}
-    </div>
+    </Box>
   );
 };
 

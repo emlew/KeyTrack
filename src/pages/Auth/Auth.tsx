@@ -1,5 +1,4 @@
 import { Button, TextField, Typography } from "@mui/material";
-import { useSupabaseClient } from "../hooks";
 import logo from "/LogoWithText.svg";
 import {
   ContentWrapper,
@@ -8,15 +7,16 @@ import {
   StyledPage,
 } from "./Auth.styles";
 import { useState } from "react";
+import { useSupabaseClient } from "@/hooks";
 
 export const Auth: React.FC = () => {
-  const [name, setName] = useState("");
-
+  const [email, setEmail] = useState("");
+  const [hasError, setHasError] = useState(false);
   const supabase = useSupabaseClient();
 
   const checkEmail = async () => {
     let { data, error } = await supabase.rpc("is_email_exist", {
-      email_input: name,
+      email_input: email,
     });
     if (error) {
       console.error(error);
@@ -25,8 +25,12 @@ export const Auth: React.FC = () => {
   };
 
   const login = async () => {
-    if (!checkEmail) return;
+    const hasAccount = await checkEmail();
+    if (!hasAccount) {
+      setHasError(true);
+      return;}
     else {
+      setHasError(false);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
       });
@@ -44,10 +48,12 @@ export const Auth: React.FC = () => {
           <TextField
             variant="outlined"
             label="Email"
-            value={name}
+            value={email}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setName(event.target.value);
+              setEmail(event.target.value);
             }}
+            error={hasError}
+            helperText={hasError ? "No account found for this email." : ""}
           />
           <Button variant={"contained"} onClick={login}>
             Login

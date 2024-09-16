@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import Auth from "../Auth";
 import { Session } from "@supabase/supabase-js";
 import { AppRouter } from "./AppRouter";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useSupabaseClient } from "@/hooks";
 import { Box } from "@mui/material";
+import { Auth } from "@/pages";
 
 export const App: React.FC = () => {
   const supabase = useSupabaseClient();

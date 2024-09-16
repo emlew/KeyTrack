@@ -1,4 +1,5 @@
 import { useSupabaseClient } from "@/hooks";
+import { Button, Typography } from "@mui/material";
 
 export const HomePage: React.FC = () => {
   const supabase = useSupabaseClient();
@@ -11,8 +12,10 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <h1>Home Page</h1>
-      <button onClick={logout}>Log out</button>
+      <Typography>Home Page</Typography>
+      <Button variant="contained" onClick={logout}>
+        Log out
+      </Button>
     </>
   );
 };

@@ -1,2 +1,2 @@
-export * from "./useSupabaseClient";
+export * from "./useSupabase";
 export * from "./useUserData";

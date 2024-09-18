@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import { Session } from "@supabase/supabase-js";
 import { AppRouter } from "./AppRouter";
 import { BrowserRouter as Router } from "react-router-dom";
-import { useSupabaseClient } from "@/hooks";
-import { Box } from "@mui/material";
-import { Auth } from "@/pages";
+import { useSupabase } from "@/hooks";
 
 export const App: React.FC = () => {
-  const supabase = useSupabaseClient();
+  const supabase = useSupabase();
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
@@ -25,15 +23,9 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <Box>
-      {!session ? (
-        <Auth />
-      ) : (
-        <Router>
-          <AppRouter />
-        </Router>
-      )}
-    </Box>
+    <Router>
+      <AppRouter session={session} />
+    </Router>
   );
 };
 

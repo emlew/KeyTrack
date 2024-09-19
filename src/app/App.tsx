@@ -3,6 +3,7 @@ import { Session } from "@supabase/supabase-js";
 import { AppRouter } from "./AppRouter";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useSupabase } from "@/hooks";
+import { Auth } from "@/pages";
 
 export const App: React.FC = () => {
   const supabase = useSupabase();
@@ -23,9 +24,15 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <Router>
-      <AppRouter session={session} />
-    </Router>
+    <>
+      {session ? (
+        <Router>
+          <AppRouter />
+        </Router>
+      ) : (
+        <Auth />
+      )}
+    </>
   );
 };
 

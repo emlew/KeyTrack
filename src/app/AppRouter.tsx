@@ -1,24 +1,18 @@
-import { DefaultLayout, UnauthenticatedLayout } from "@/layouts";
-import { Auth, HomePage } from "@/pages";
-import { Session } from "@supabase/supabase-js";
+import { DefaultLayout } from "@/layouts";
+import { Account, Admin, Events, Home, Hours } from "@/pages";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-export const AppRouter: React.FC<{ session: Session | null }> = ({
-  session,
-}) => {
+export const AppRouter: React.FC = () => {
   return (
     <Routes>
-      {session ? (
-        <Route path="/" element={<DefaultLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      ) : (
-        <Route path="/" element={<UnauthenticatedLayout />}>
-          <Route index element={<Auth />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      )}
+      <Route path="/" element={<DefaultLayout />}>
+        <Route index element={<Home />} />
+        <Route path="hours" element={<Hours />} />
+        <Route path="events" element={<Events />} />
+        <Route path="account" element={<Account />} />
+        <Route path="admin" element={<Admin />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
     </Routes>
   );
 };

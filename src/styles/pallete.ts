@@ -23,9 +23,9 @@ export const palette: PaletteOptions = {
   },
   background: { default: colors.white },
   primary: {
-    main: colors.primary500,
+    main: colors.primary800,
     light: colors.primary300,
-    dark: colors.primary700,
+    dark: colors.primary600,
     "900": colors.primary900,
     "800": colors.primary800,
     "700": colors.primary700,
@@ -36,6 +36,9 @@ export const palette: PaletteOptions = {
     "200": colors.primary200,
     "100": colors.primary100,
     "50": colors.primary50,
+  },
+  secondary: {
+    main: colors.white,
   },
   text: {
     primary: colors.primary800,

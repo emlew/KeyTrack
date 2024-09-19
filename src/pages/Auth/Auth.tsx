@@ -1,9 +1,5 @@
 import logo from "/LogoWithText.svg";
-import {
-  ContentWrapper,
-  StyledDivider,
-  StyledPage,
-} from "./Auth.styles";
+import { ContentWrapper, StyledDivider, StyledPage } from "./Auth.styles";
 import { Login } from "@/components";
 
 export const Auth: React.FC = () => {
@@ -17,5 +13,3 @@ export const Auth: React.FC = () => {
     </StyledPage>
   );
 };
-
-export default Auth;

@@ -1,5 +1,5 @@
-import { Button, TextField, Typography } from "@mui/material";
-import { StyledLoginForm } from "./SendResetPassword.styles";
+import { Button, TextField } from "@mui/material";
+import { StyledLoginForm, StyledResetTitle } from "./SendResetPassword.styles";
 import { useState } from "react";
 import { useSupabase } from "@/hooks";
 
@@ -24,9 +24,7 @@ export const SendResetPassword: React.FC<{ onToLogin: () => void }> = ({
 
   return (
     <StyledLoginForm>
-      <Typography variant="h4" sx={{ paddingBottom: "20px" }}>
-        Reset Password
-      </Typography>
+      <StyledResetTitle variant="h4">Reset Password</StyledResetTitle>
       <TextField
         variant="outlined"
         label="Email"

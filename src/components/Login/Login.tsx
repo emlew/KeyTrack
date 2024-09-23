@@ -1,5 +1,10 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { StyledLoginForm } from "./Login.styles";
+import { Button, TextField } from "@mui/material";
+import {
+  StyledLoginForm,
+  StyledPasswordBox,
+  StyledShowPassword,
+  StyledWelcome,
+} from "./Login.styles";
 import { useState } from "react";
 import { useSupabase } from "@/hooks";
 
@@ -24,9 +29,7 @@ export const Login: React.FC = () => {
 
   return (
     <StyledLoginForm>
-      <Typography variant="h4" sx={{ paddingBottom: "20px" }}>
-        Welcome Back!
-      </Typography>
+      <StyledWelcome variant="h4">Welcome Back!</StyledWelcome>
       <TextField
         variant="outlined"
         label="Email"
@@ -35,7 +38,7 @@ export const Login: React.FC = () => {
           setEmail(event.target.value);
         }}
       />
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <StyledPasswordBox>
         <TextField
           variant="outlined"
           label="Password"
@@ -47,14 +50,14 @@ export const Login: React.FC = () => {
           error={hasError}
           helperText={helperText}
         />
-        <Typography
+        <StyledShowPassword
           variant="caption"
           onClick={() => setShowPassword(!showPassword)}
           sx={{ cursor: "pointer" }}
         >
           {(showPassword ? "Hide" : "Show") + " Password"}
-        </Typography>
-      </Box>
+        </StyledShowPassword>
+      </StyledPasswordBox>
       <Button variant={"contained"} onClick={login}>
         Login
       </Button>

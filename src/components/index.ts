@@ -1,4 +1,5 @@
 export * from "./Card";
+export * from "./ContextMenu";
 export * from "./Login";
 export * from "./NavBar";
 export * from "./NavBarItem";

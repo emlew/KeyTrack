@@ -6,6 +6,7 @@ export const StyledTable = styled(TableContainer)({
   borderRadius: "4px",
   border: `1px solid ${theme.palette.primary[800]}`,
   boxShadow: "none",
+  width: "60vw",
 });
 
 export const StyledTableHeadRow = styled(TableRow)({

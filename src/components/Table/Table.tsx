@@ -16,7 +16,7 @@ export const Table: React.FC<{
         <TableHead>
           <StyledTableHeadRow>
             {columnNames?.map((c, i) => (
-              <StyledTableHeadCell align={i == 0 ? undefined : "right"}>
+              <StyledTableHeadCell align={i == 0 ? undefined : "right"} key={c}>
                 {c}
               </StyledTableHeadCell>
             ))}

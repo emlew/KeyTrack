@@ -8,10 +8,18 @@ export const StyledPage = styled(Box)({
   gap: "40px",
   width: "100%",
 });
+
 export const StyledContent = styled(Box)({
   display: "flex",
   flexDirection: "row",
   width: "100%",
   gap: "40px",
   alignContent: "flex-start",
+});
+
+export const StyledActions = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+  width: "25vw",
 });

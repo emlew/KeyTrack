@@ -3,6 +3,7 @@ import {
   useAdminSupabase,
   useAllUsersData,
   useInvalidateQueries,
+  useSnackbar,
 } from "@/hooks";
 import {
   TextField,
@@ -19,11 +20,10 @@ import DeleteIcon from "@mui/icons-material/DeleteRounded";
 
 export const Admin: React.FC = () => {
   const [invitee, setInvitee] = useState("");
-  const [hasError, setHasError] = useState(false);
-  const [helperText, setHelperText] = useState("");
   const adminClient = useAdminSupabase();
   const { data: data } = useAllUsersData();
   const invalidateQueries = useInvalidateQueries("users");
+  const { addSnackbar } = useSnackbar();
 
   const create = async () => {
     // TODO: add bulk account creation option
@@ -32,13 +32,10 @@ export const Admin: React.FC = () => {
       password: "KeyClub24",
     });
     if (error) {
-      setHasError(true);
-      setHelperText(error.message);
-    } else {
-      setHelperText(`User ${invitee} successfully created!`);
-      setHasError(false);
-      // TODO: add snackbars for feedback
+      addSnackbar("Warning: User Creation Failed");
     }
+    invalidateQueries();
+    addSnackbar("User Created Successfully");
   };
 
   const assignAdminRole = async (uid: string) => {
@@ -46,9 +43,11 @@ export const Admin: React.FC = () => {
       role: "kt_admin",
     });
     if (error) {
-      console.log(error.message);
+      addSnackbar("Warning: Admin Role Assignment Failed");
+    } else {
+      invalidateQueries();
+      addSnackbar("Admin Role Assigned Successfully");
     }
-    invalidateQueries();
   };
 
   const removeAdminRole = async (uid: string) => {
@@ -56,16 +55,19 @@ export const Admin: React.FC = () => {
       role: "authenticated",
     });
     if (error) {
-      console.log(error.message);
+      addSnackbar("Warning: Admin Role Removal Failed");
     }
     invalidateQueries();
+    addSnackbar("Admin Role Removed Successfully");
   };
 
   const deleteUser = async (uid: string) => {
     const { error } = await adminClient.deleteUser(uid);
     if (error) {
-      console.log(error.message);
+      addSnackbar("Warning: User Deletion Failed");
     }
+    invalidateQueries();
+    addSnackbar("User Deleted Successfully");
   };
 
   const ContextMenuItems = [
@@ -101,8 +103,6 @@ export const Admin: React.FC = () => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setInvitee(event.target.value);
               }}
-              error={hasError}
-              helperText={helperText}
             />
             <Button variant="contained" onClick={create}>
               Create

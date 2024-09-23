@@ -4,5 +4,6 @@ export * from "./Login";
 export * from "./NavBar";
 export * from "./NavBarItem";
 export * from "./SendResetPassword";
+export * from "./Snackbar";
 export * from "./Table";
 export * from "./Title";

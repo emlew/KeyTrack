@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 let client: ReturnType<typeof createClient> | undefined;
 
-export function getSupabaseBrowserClient() {
+const getSupabaseBrowserClient = () => {
   if (client) {
     return client;
   }
@@ -14,7 +14,7 @@ export function getSupabaseBrowserClient() {
   );
 
   return client;
-}
+};
 
 export const useSupabase = () => {
   return useMemo(getSupabaseBrowserClient, []);

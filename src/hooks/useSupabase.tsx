@@ -1,7 +1,8 @@
+import { TypedSupabaseClient } from "@/utils/types";
 import { createClient } from "@supabase/supabase-js";
 import { useMemo } from "react";
 
-let client: ReturnType<typeof createClient> | undefined;
+let client: TypedSupabaseClient | undefined;
 
 const getSupabaseBrowserClient = () => {
   if (client) {
@@ -10,7 +11,12 @@ const getSupabaseBrowserClient = () => {
 
   client = createClient(
     import.meta.env.VITE_SUPABASE_URL,
-    import.meta.env.VITE_SUPABASE_ANON_KEY
+    import.meta.env.VITE_SUPABASE_ANON_KEY,
+    {
+      global: {
+        headers: { Authorization: import.meta.env.VITE_SUPABASE_ANON_KEY },
+      },
+    }
   );
 
   return client;

@@ -4,6 +4,7 @@ import { AppRouter } from "./AppRouter";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useSupabase } from "@/hooks";
 import { Auth } from "@/pages";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const App: React.FC = () => {
   const supabase = useSupabase();
@@ -26,9 +27,12 @@ export const App: React.FC = () => {
   return (
     <>
       {session ? (
-        <Router>
-          <AppRouter />
-        </Router>
+        <>
+          <Router>
+            <AppRouter />
+          </Router>
+          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+        </>
       ) : (
         <Auth />
       )}

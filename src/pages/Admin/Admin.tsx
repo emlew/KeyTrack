@@ -30,6 +30,7 @@ export const Admin: React.FC = () => {
     const { error } = await adminClient.createUser({
       email: invitee,
       password: "KeyClub24",
+      email_confirm: true,
     });
     if (error) {
       addSnackbar("Warning: User Creation Failed");

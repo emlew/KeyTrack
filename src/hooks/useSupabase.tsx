@@ -1,4 +1,4 @@
-import { TypedSupabaseClient } from "@/utils/types";
+import { TypedSupabaseClient } from "@/utils";
 import { createClient } from "@supabase/supabase-js";
 import { useMemo } from "react";
 

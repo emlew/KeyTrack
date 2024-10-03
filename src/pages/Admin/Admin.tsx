@@ -1,4 +1,4 @@
-import { Card, ContextMenu, Table, Title } from "@/components";
+import { ContextMenu, Table, Title } from "@/components";
 import {
   useAdminSupabase,
   useAllUsersData,
@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Card,
 } from "@mui/material";
 import { useState } from "react";
 import { StyledActions, StyledContent, StyledPage } from "./Admin.styles";

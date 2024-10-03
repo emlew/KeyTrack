@@ -1,5 +1,5 @@
+import { TypedSupabaseClient } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import { TypedSupabaseClient } from "@/utils/types";
 
 export const useEventsData = (client: TypedSupabaseClient) => {
   const queryKey = ["events"];

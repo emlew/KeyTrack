@@ -6,4 +6,5 @@ export const StyledContent = styled(Box)({
   left: "72px",
   padding: "40px",
   width: "calc(100vw - 72px)",
+  height: "100%",
 });

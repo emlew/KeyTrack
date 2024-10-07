@@ -61,6 +61,102 @@ export type Database = {
         }
         Relationships: []
       }
+      hours: {
+        Row: {
+          created_at: string
+          date_completed: string | null
+          event_id: number | null
+          has_event: boolean
+          hours: number
+          id: number
+          is_approved: boolean
+          shift_id: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          date_completed?: string | null
+          event_id?: number | null
+          has_event: boolean
+          hours: number
+          id?: number
+          is_approved: boolean
+          shift_id?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          date_completed?: string | null
+          event_id?: number | null
+          has_event?: boolean
+          hours?: number
+          id?: number
+          is_approved?: boolean
+          shift_id?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hours_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hours_shift_id_fkey"
+            columns: ["shift_id"]
+            isOneToOne: false
+            referencedRelation: "shifts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hours_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shifts: {
+        Row: {
+          created_at: string
+          end_time: string | null
+          event_id: number | null
+          id: number
+          start_time: string | null
+          worker_ids: string | null
+          workers_needed: number | null
+        }
+        Insert: {
+          created_at?: string
+          end_time?: string | null
+          event_id?: number | null
+          id?: number
+          start_time?: string | null
+          worker_ids?: string | null
+          workers_needed?: number | null
+        }
+        Update: {
+          created_at?: string
+          end_time?: string | null
+          event_id?: number | null
+          id?: number
+          start_time?: string | null
+          worker_ids?: string | null
+          workers_needed?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shifts_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

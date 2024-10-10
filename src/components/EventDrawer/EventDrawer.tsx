@@ -6,9 +6,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Drawer } from "../Drawer";
-import { useShiftsData, useSupabase } from "@/hooks";
+import { useShiftsData, useSupabase, useWorkersByEventData } from "@/hooks";
 import dayjs from "dayjs";
 import { Shift } from "@/api";
+import { useState } from "react";
 
 type SignUp = "sign-up" | "edit";
 
@@ -18,6 +19,18 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
 }) => {
   const supabase = useSupabase();
   const { data: event, isLoading } = useShiftsData(supabase, id);
+  const { data: shifts } = useWorkersByEventData(supabase, id);
+  const [assignedShifts, setAssignedShifts] = useState<number[]>(
+    shifts?.map((s) => s.shift) ?? []
+  );
+
+  const handleShiftChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAssignedShifts((prev) => {
+      if (prev.includes(+event.target.name))
+        return prev.filter((i) => i != +event.target.name);
+      else return prev.concat(+event.target.name);
+    });
+  };
 
   return (
     <Drawer
@@ -40,7 +53,14 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
                 <FormControlLabel
                   control={
                     <Checkbox
-                      disabled={s.workers_needed == (s.worker_ids?.length ?? 0)}
+                      name={s.id.toString()}
+                      disabled={
+                        (s.is_full &&
+                          !shifts?.map((s) => s.shift).includes(s.id)) ??
+                        true
+                      }
+                      checked={assignedShifts.includes(s.id)}
+                      onChange={handleShiftChange}
                     />
                   }
                   key={s.id}

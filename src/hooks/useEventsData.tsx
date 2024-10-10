@@ -5,7 +5,7 @@ export const useEventsData = (client: TypedSupabaseClient) => {
   const queryKey = ["events"];
 
   const queryFn = async () => {
-    return await client.from("events").select("*");
+    return await client.from("events").select("*, shifts(*)");
   };
 
   return useQuery({ queryKey, queryFn });

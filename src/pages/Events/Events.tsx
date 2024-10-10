@@ -1,5 +1,5 @@
-import { EventListing } from "@/components";
-import { useEventsData, useSupabase } from "@/hooks";
+import { EventDrawer, EventListing } from "@/components";
+import { useDrawer, useEventsData, useSupabase, useWorkersData } from "@/hooks";
 import { StyledCard, StyledEventsTitle, StyledPage } from "./Events.styles";
 import {
   FormControl,
@@ -10,24 +10,38 @@ import {
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { months } from "@/utils";
+
+const isSignedUp = (userShifts: number[], eventShifts: number[]) => {
+  const intersection = eventShifts.filter((s) => userShifts.includes(s));
+  return intersection.length > 0;
+};
 
 export const Events: React.FC = () => {
   const supabase = useSupabase();
   const { data: events } = useEventsData(supabase);
+  const { openDrawer } = useDrawer();
+  const { data: userShifts } = useWorkersData(supabase);
 
   const [monthFilter, setMonthFilter] = useState(dayjs().month().toString());
-  const [filteredEvents, setFilteredEvents] = useState(
-    events?.data?.filter((e) => dayjs(e.time).month() == dayjs().month())
-  );
+  const filteredEvents = useMemo(() => {
+    return events?.data?.filter(
+      (e) => dayjs(e.time).month().toString() == monthFilter
+    );
+  }, [events, monthFilter]);
 
-  const handleFilterChange = (event: SelectChangeEvent) => {
-    setFilteredEvents(
-      events?.data?.filter(
-        (e) => dayjs(e.time).month().toString() == event.target.value
+  const signedEvents = useMemo(() => {
+    const shiftIds = userShifts?.map((s) => s.id);
+    return events?.data?.filter((e) =>
+      isSignedUp(
+        shiftIds ?? [],
+        e.shifts.map((s) => s.id)
       )
     );
+  }, [events]);
+
+  const handleFilterChange = (event: SelectChangeEvent) => {
     setMonthFilter(event.target.value);
   };
 
@@ -35,14 +49,13 @@ export const Events: React.FC = () => {
     <StyledPage>
       <StyledCard>
         <Typography variant="h4">Your Events</Typography>
-        {events?.data?.map((e) => (
+        {signedEvents?.map((e) => (
           <EventListing
             key={e.id}
             event={e}
             buttonText="Edit"
             buttonCallback={(id) => {
-              console.log(id);
-              // todo: add drawer and edit ability
+              openDrawer(<EventDrawer variant="edit" id={id} />);
             }}
           />
         ))}
@@ -73,8 +86,7 @@ export const Events: React.FC = () => {
             event={e}
             buttonText="Sign Up"
             buttonCallback={(id) => {
-              console.log(id);
-              // todo: add drawer and sign up ability
+              openDrawer(<EventDrawer variant="sign-up" id={id} />);
             }}
           />
         ))}

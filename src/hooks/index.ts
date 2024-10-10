@@ -7,3 +7,5 @@ export * from "./useShiftsData";
 export * from "./useSnackbar";
 export * from "./useSupabase";
 export * from "./useUserData";
+export * from "./useWorkersByEventData";
+export * from "./useWorkersData";

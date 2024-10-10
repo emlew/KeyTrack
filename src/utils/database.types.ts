@@ -119,14 +119,35 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: number
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: number
+          role: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: number
+          role?: string
+        }
+        Relationships: []
+      }
       shifts: {
         Row: {
           created_at: string
           end_time: string | null
           event_id: number | null
           id: number
+          is_full: boolean | null
           start_time: string | null
-          worker_ids: string | null
           workers_needed: number | null
         }
         Insert: {
@@ -134,8 +155,8 @@ export type Database = {
           end_time?: string | null
           event_id?: number | null
           id?: number
+          is_full?: boolean | null
           start_time?: string | null
-          worker_ids?: string | null
           workers_needed?: number | null
         }
         Update: {
@@ -143,8 +164,8 @@ export type Database = {
           end_time?: string | null
           event_id?: number | null
           id?: number
+          is_full?: boolean | null
           start_time?: string | null
-          worker_ids?: string | null
           workers_needed?: number | null
         }
         Relationships: [
@@ -157,16 +178,57 @@ export type Database = {
           },
         ]
       }
+      workers: {
+        Row: {
+          created_at: string
+          email: string
+          id: number
+          shift: number
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: number
+          shift: number
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: number
+          shift?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workers_email_fkey"
+            columns: ["email"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["email"]
+          },
+          {
+            foreignKeyName: "workers_shift_fkey"
+            columns: ["shift"]
+            isOneToOne: false
+            referencedRelation: "shifts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      is_email_exist: {
+      get_workers_by_event: {
         Args: {
-          email_input: string
+          event: number
         }
-        Returns: boolean
+        Returns: {
+          created_at: string
+          email: string
+          id: number
+          shift: number
+        }[]
       }
     }
     Enums: {

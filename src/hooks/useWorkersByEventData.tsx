@@ -1,10 +1,8 @@
-import { TypedSupabaseClient } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
+import { useSupabase } from "./useSupabase";
 
-export const useWorkersByEventData = (
-  client: TypedSupabaseClient,
-  eventId: number
-) => {
+export const useWorkersByEventData = (eventId: number) => {
+  const client = useSupabase();
   const queryKey = ["workers_event"];
 
   const queryFn = async () => {

@@ -1,7 +1,8 @@
-import { TypedSupabaseClient } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
+import { useSupabase } from "./useSupabase";
 
-export const useWorkersData = (client: TypedSupabaseClient) => {
+export const useWorkersData = () => {
+  const client = useSupabase();
   const queryKey = ["workers"];
 
   const queryFn = async () => {

@@ -6,10 +6,16 @@ import {
   Typography,
 } from "@mui/material";
 import { Drawer } from "../Drawer";
-import { useShiftsData, useSupabase, useWorkersByEventData } from "@/hooks";
+import {
+  useDrawer,
+  useInvalidateQueries,
+  useShiftsData,
+  useWorkersByEventData,
+} from "@/hooks";
 import dayjs from "dayjs";
 import { Shift } from "@/api";
 import { useState } from "react";
+import { useSyncWorkers } from "@/hooks/useSyncWorkers";
 
 type SignUp = "sign-up" | "edit";
 
@@ -17,11 +23,19 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
   variant,
   id,
 }) => {
-  const supabase = useSupabase();
-  const { data: event, isLoading } = useShiftsData(supabase, id);
-  const { data: shifts } = useWorkersByEventData(supabase, id);
+  const { closeDrawer } = useDrawer();
+  const invalidateEvents = useInvalidateQueries("events");
+  const { data: event, isLoading } = useShiftsData(id);
+  const { data: shifts, isLoading: isLoadingWorkers } =
+    useWorkersByEventData(id);
+
   const [assignedShifts, setAssignedShifts] = useState<number[]>(
     shifts?.map((s) => s.shift) ?? []
+  );
+
+  const { mutate } = useSyncWorkers(
+    shifts?.map((s) => s.shift) ?? [],
+    assignedShifts
   );
 
   const handleShiftChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,12 +46,19 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
     });
   };
 
+  const handleConfirm = () => {
+    console.log(assignedShifts);
+    mutate();
+    invalidateEvents();
+    closeDrawer();
+  };
+
   return (
     <Drawer
       title={variant === "sign-up" ? "Sign Up" : "Edit Sign Up"}
-      onConfirm={() => {}}
+      onConfirm={handleConfirm}
     >
-      {!isLoading && (
+      {!isLoading && !isLoadingWorkers && (
         <>
           <Box>
             <Typography variant="h5">{event?.name}</Typography>
@@ -59,7 +80,9 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
                           !shifts?.map((s) => s.shift).includes(s.id)) ??
                         true
                       }
-                      checked={assignedShifts.includes(s.id)}
+                      defaultChecked={shifts
+                        ?.map((s) => s.shift)
+                        .includes(s.id)}
                       onChange={handleShiftChange}
                     />
                   }

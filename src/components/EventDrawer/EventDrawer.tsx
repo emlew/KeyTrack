@@ -6,15 +6,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Drawer } from "../Drawer";
-import {
-  useDrawer,
-  useInvalidateQueries,
-  useShiftsData,
-  useWorkersByEventData,
-} from "@/hooks";
+import { useDrawer, useShiftsData, useWorkersByEventData } from "@/hooks";
 import dayjs from "dayjs";
 import { Shift } from "@/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSyncWorkers } from "@/hooks/useSyncWorkers";
 
 type SignUp = "sign-up" | "edit";
@@ -24,14 +19,15 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
   id,
 }) => {
   const { closeDrawer } = useDrawer();
-  const invalidateEvents = useInvalidateQueries("events");
   const { data: event, isLoading } = useShiftsData(id);
   const { data: shifts, isLoading: isLoadingWorkers } =
     useWorkersByEventData(id);
 
-  const [assignedShifts, setAssignedShifts] = useState<number[]>(
-    shifts?.map((s) => s.shift) ?? []
-  );
+  const [assignedShifts, setAssignedShifts] = useState<number[]>([]);
+
+  useEffect(() => {
+    setAssignedShifts(shifts?.map((s) => s.shift) ?? []);
+  }, [shifts]);
 
   const { mutate } = useSyncWorkers(
     shifts?.map((s) => s.shift) ?? [],
@@ -48,7 +44,6 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
 
   const handleConfirm = () => {
     mutate();
-    invalidateEvents();
     closeDrawer();
   };
 
@@ -79,9 +74,7 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
                           !shifts?.map((s) => s.shift).includes(s.id)) ??
                         true
                       }
-                      defaultChecked={shifts
-                        ?.map((s) => s.shift)
-                        .includes(s.id)}
+                      checked={assignedShifts?.map((s) => s).includes(s.id)}
                       onChange={handleShiftChange}
                     />
                   }

@@ -1,9 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useSupabase } from "./useSupabase";
+import { useInvalidateQueries } from "./useInvalidateQueries";
 
 export const useSyncWorkers = (prevWorkers: number[], newWorkers: number[]) => {
   const client = useSupabase();
   const mutationKey = ["sync_workers"];
+  const invalidateQueries = useInvalidateQueries();
 
   const mutationFn = async () => {
     return await client.rpc("manage_workers_by_shifts", {
@@ -12,5 +14,9 @@ export const useSyncWorkers = (prevWorkers: number[], newWorkers: number[]) => {
     });
   };
 
-  return useMutation({ mutationKey, mutationFn });
+  return useMutation({
+    mutationKey,
+    mutationFn,
+    onSuccess: invalidateQueries,
+  });
 };

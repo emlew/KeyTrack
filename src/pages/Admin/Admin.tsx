@@ -1,4 +1,4 @@
-import { Card, ContextMenu, Table, Title } from "@/components";
+import { ContextMenu, Table, Title } from "@/components";
 import {
   useAdminSupabase,
   useAllUsersData,
@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Card,
 } from "@mui/material";
 import { useState } from "react";
 import { StyledActions, StyledContent, StyledPage } from "./Admin.styles";
@@ -30,6 +31,7 @@ export const Admin: React.FC = () => {
     const { error } = await adminClient.createUser({
       email: invitee,
       password: "KeyClub24",
+      email_confirm: true,
     });
     if (error) {
       addSnackbar("Warning: User Creation Failed");

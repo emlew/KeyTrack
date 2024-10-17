@@ -2,6 +2,7 @@ import { useSupabase, useUserData } from "@/hooks";
 import {
   Box,
   Button,
+  Card,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -15,7 +16,7 @@ import {
   StyledPage,
   StyledShowPassword,
 } from "./Account.styles";
-import { Card, Title } from "@/components";
+import { Title } from "@/components";
 
 export const Account: React.FC = () => {
   const supabase = useSupabase();

@@ -184,18 +184,21 @@ export type Database = {
           email: string
           id: number
           shift: number
+          event_id: number
         }
         Insert: {
           created_at?: string
-          email: string
+          email?: string
           id?: number
           shift: number
+          event_id: number
         }
         Update: {
           created_at?: string
           email?: string
           id?: number
           shift?: number
+          event_id?: number
         }
         Relationships: [
           {
@@ -224,11 +227,18 @@ export type Database = {
           event: number
         }
         Returns: {
+          id: number
           created_at: string
           email: string
-          id: number
           shift: number
         }[]
+      }
+      manage_workers_by_shifts: {
+        Args: {
+          shifts_to_add: number[]
+          shifts_to_delete: number[]
+        }
+        Returns: undefined
       }
     }
     Enums: {

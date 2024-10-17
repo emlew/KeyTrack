@@ -47,7 +47,6 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
   };
 
   const handleConfirm = () => {
-    console.log(assignedShifts);
     mutate();
     invalidateEvents();
     closeDrawer();

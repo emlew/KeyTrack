@@ -1,9 +1,9 @@
 import { ContextMenu, Table, Title } from "@/components";
 import {
   useAdminSupabase,
-  useAllUsersData,
   useInvalidateQueries,
   useSnackbar,
+  useUserData,
 } from "@/hooks";
 import {
   TextField,
@@ -18,11 +18,12 @@ import { useState } from "react";
 import { StyledActions, StyledContent, StyledPage } from "./Admin.styles";
 import AdminIcon from "@mui/icons-material/SupervisorAccountRounded";
 import DeleteIcon from "@mui/icons-material/DeleteRounded";
+import { Profile } from "@/api";
 
 export const Admin: React.FC = () => {
   const [invitee, setInvitee] = useState("");
   const adminClient = useAdminSupabase();
-  const { data: data } = useAllUsersData();
+  const { data: data } = useUserData(true);
   const invalidateQueries = useInvalidateQueries("users");
   const { addSnackbar } = useSnackbar();
 
@@ -121,20 +122,19 @@ export const Admin: React.FC = () => {
         <Table columnNames={["Email", "Role", ""]}>
           <TableBody>
             {data &&
-              data.users.map((user) => (
+              (data as Profile[]).map((user) => (
                 <TableRow key={user.id}>
                   <TableCell component="th" scope="row">
                     {user.email}
                   </TableCell>
                   <TableCell align="right">
-                    {user.role === "kt_admin" ? "Admin" : "Member"}
+                    {user.is_admin ? "Admin" : "Member"}
                   </TableCell>
                   <TableCell align="center">
                     <ContextMenu
-                      id={user.id}
+                      id={user.id.toString()}
                       items={ContextMenuItems.filter((i) => {
-                        if (user.role === "kt_admin")
-                          return i.title !== "Make Admin";
+                        if (user.is_admin) return i.title !== "Make Admin";
                         else return i.title != "Remove Admin";
                       })}
                     />

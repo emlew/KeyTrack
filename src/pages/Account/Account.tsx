@@ -17,6 +17,7 @@ import {
   StyledShowPassword,
 } from "./Account.styles";
 import { Title } from "@/components";
+import { Profile } from "@/api";
 
 export const Account: React.FC = () => {
   const supabase = useSupabase();
@@ -102,13 +103,11 @@ export const Account: React.FC = () => {
       <StyledInfo>
         <Box>
           <Typography variant="caption">Email</Typography>
-          <Typography>{user?.email}</Typography>
+          <Typography>{(user as Profile)?.email}</Typography>
         </Box>
         <Box>
           <Typography variant="caption">Status</Typography>
-          <Typography>
-            {user?.role === "kt_admin" ? "Administrator" : "Member"}
-          </Typography>
+          <Typography>{(user as Profile)?.is_admin ? "Administrator" : "Member"}</Typography>
         </Box>
         <Box>
           <Typography variant="caption">Password</Typography>

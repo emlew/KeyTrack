@@ -5,6 +5,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useSupabase } from "@/hooks";
 import { Auth } from "@/pages";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export const App: React.FC = () => {
   const supabase = useSupabase();
@@ -25,7 +27,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       {session ? (
         <>
           <Router>
@@ -36,7 +38,7 @@ export const App: React.FC = () => {
       ) : (
         <Auth />
       )}
-    </>
+    </LocalizationProvider>
   );
 };
 

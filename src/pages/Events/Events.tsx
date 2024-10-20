@@ -1,7 +1,8 @@
-import { EventDrawer, EventListing } from "@/components";
+import { AddEventDrawer, EventDrawer, EventListing } from "@/components";
 import { useDrawer, useEventsData } from "@/hooks";
 import { StyledCard, StyledEventsTitle, StyledPage } from "./Events.styles";
 import {
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,6 +13,7 @@ import {
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { months } from "@/utils";
+import { AddRounded } from "@mui/icons-material";
 
 export const Events: React.FC = () => {
   const { data: events } = useEventsData();
@@ -67,6 +69,13 @@ export const Events: React.FC = () => {
               ))}
             </Select>
           </FormControl>
+          <Button
+            variant="contained"
+            onClick={() => openDrawer(<AddEventDrawer />)}
+            endIcon={<AddRounded />}
+          >
+            Create Event
+          </Button>
         </StyledEventsTitle>
         {filteredEvents?.map((e) => (
           <EventListing

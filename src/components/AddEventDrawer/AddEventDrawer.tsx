@@ -6,15 +6,23 @@ import { StyledDetails, StyledDrawerContent } from "./AddEventDrawer.styles";
 import { AddShifts } from "../AddShifts";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
+import { useCreateEvent } from "@/hooks/useCreateEvent";
 
 export const AddEventDrawer: React.FC = () => {
   const { closeDrawer } = useDrawer();
-  const [title, setTitle] = useState("");
+  const { mutate } = useCreateEvent();
+  const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const [time, setTime] = useState<Dayjs | null>(dayjs());
 
   const handleConfirm = () => {
+    mutate({
+      description,
+      location,
+      name,
+      time: time?.toString(),
+    });
     closeDrawer();
   };
 
@@ -27,9 +35,9 @@ export const AddEventDrawer: React.FC = () => {
             label="Event Title"
             sx={{ width: "45%" }}
             required
-            value={title}
+            value={name}
             onChange={(event) => {
-              setTitle(event.target.value);
+              setName(event.target.value);
             }}
           />
           <TextField
@@ -53,11 +61,11 @@ export const AddEventDrawer: React.FC = () => {
           <DatePicker
             label="Date"
             sx={{ width: "45%" }}
-            value={dayjs(date)}
-            onChange={(event) => setDate(event)}
+            value={dayjs(time)}
+            onChange={(event) => setTime(event)}
           />
         </StyledDetails>
-        <AddShifts date={dayjs(date)} />
+        <AddShifts date={dayjs(time)} />
       </StyledDrawerContent>
     </Drawer>
   );

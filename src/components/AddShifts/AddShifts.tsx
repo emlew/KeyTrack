@@ -85,6 +85,7 @@ export const AddShifts: React.FC<{ date: Dayjs }> = ({ date }) => {
       <StyledShiftsTable>
         {shifts.map((s, i) => (
           <StyledShiftRow
+            key={i}
             sx={{
               backgroundColor:
                 i % 2 == 0

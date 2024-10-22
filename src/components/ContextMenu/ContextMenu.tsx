@@ -37,6 +37,7 @@ export const ContextMenu: React.FC<{
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {items.map((item) => (
           <MenuItem
+            key={item.title}
             onClick={() => {
               item.callback(id);
               handleClose();

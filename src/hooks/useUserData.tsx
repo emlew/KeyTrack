@@ -1,12 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSupabase } from "./useSupabase";
 
-export const useUserData = () => {
+export const useUserData = (getAllUsers = false) => {
   const client = useSupabase();
-  const queryKey = ["user"];
+  const queryKey = getAllUsers ? ["users"] : ["user"];
 
   const queryFn = async () => {
-    return client.auth.getUser().then((res) => res.data.user);
+    if (getAllUsers) {
+      return await client
+        .from("profiles")
+        .select("*")
+        .then((res) => res.data);
+    }
+    const email = (await client.auth.getUser()).data.user?.email ?? "";
+    return await client
+      .from("profiles")
+      .select("*")
+      .eq("email", email)
+      .single()
+      .then((res) => res.data);
   };
 
   return useQuery({ queryKey, queryFn });

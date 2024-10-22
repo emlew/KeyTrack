@@ -16,7 +16,7 @@ export const StyledDrawerContent = styled(Box)({
   flexDirection: "column",
   paddingTop: "40px",
   gap: "40px",
-  minWidth: "30vw",
+  width: "30vw",
 });
 
 export const StyledButtonBox = styled(Box)({

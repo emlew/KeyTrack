@@ -1,5 +1,4 @@
 export * from "./useAdminSupabase";
-export * from "./useAllUsersData";
 export * from "./useDrawer";
 export * from "./useEventsData";
 export * from "./useInvalidateQueries";

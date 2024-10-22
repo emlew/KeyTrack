@@ -6,6 +6,7 @@ import CalendarIcon from "@mui/icons-material/CalendarMonthRounded";
 import PersonIcon from "@mui/icons-material/PersonRounded";
 import AdminIcon from "@mui/icons-material/SupervisorAccountRounded";
 import { useUserData } from "@/hooks";
+import { Profile } from "@/api";
 
 export const NavBar: React.FC = () => {
   const { data: user } = useUserData();
@@ -28,7 +29,7 @@ export const NavBar: React.FC = () => {
         text="Account"
         link="/account"
       />
-      {user?.role === "kt_admin" && (
+      {(user as Profile)?.is_admin && (
         <NavBarItem
           icon={<AdminIcon color="secondary" />}
           text="Admin"

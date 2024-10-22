@@ -3,7 +3,7 @@ import { TimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, IconButton, TextField, Typography } from "@mui/material";
 import { AddRounded, DeleteRounded } from "@mui/icons-material";
-import { Shift } from "@/api";
+import { ShiftCreate } from "@/api";
 import {
   StyledShift,
   StyledShiftContainer,
@@ -12,38 +12,26 @@ import {
 } from "./AddShifts.styles";
 import { theme } from "@/styles";
 
-export const AddShifts: React.FC<{ date: Dayjs }> = ({ date }) => {
-  const [shifts, setShifts] = useState<Shift[]>([]);
+export const AddShifts: React.FC<{
+  onAddShift: (shift: ShiftCreate) => void;
+  onDeleteShift: (id: number) => void;
+  shifts: ShiftCreate[];
+}> = ({ onAddShift, onDeleteShift, shifts }) => {
   const [start, setStart] = useState<Dayjs | null>(dayjs());
   const [end, setEnd] = useState<Dayjs | null>(dayjs());
   const [workers, setWorkers] = useState<number | undefined>(undefined);
 
   const handleAddShift = () => {
     if (start != null && end != null && workers != null) {
-      setShifts((prev) => {
-        return [
-          ...prev,
-          {
-            end_time: end?.toString(),
-            start_time: start?.toString(),
-            workers_needed: workers,
-            created_at: null,
-            event_id: null,
-            id: shifts.length,
-            is_full: null,
-          },
-        ];
+      onAddShift({
+        end_time: end?.toString(),
+        start_time: start?.toString(),
+        workers_needed: workers,
       });
       setStart(dayjs());
       setEnd(dayjs());
       setWorkers(0);
     }
-  };
-
-  const handleDeleteShift = (id: number) => {
-    setShifts((prev) => {
-      return [...prev.slice(0, id), ...prev.slice(id + 1)];
-    });
   };
 
   return (
@@ -104,10 +92,7 @@ export const AddShifts: React.FC<{ date: Dayjs }> = ({ date }) => {
                   ? " workers"
                   : " worker")}
             </Typography>
-            <IconButton
-              sx={{ width: "20%" }}
-              onClick={() => handleDeleteShift(i)}
-            >
+            <IconButton sx={{ width: "20%" }} onClick={() => onDeleteShift(i)}>
               <DeleteRounded />
             </IconButton>
           </StyledShiftRow>

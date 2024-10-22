@@ -1,5 +1,5 @@
 export type Shift = {
-  created_at: string | null;
+  created_at: string;
   end_time: string | null;
   event_id: number | null;
   id: number;

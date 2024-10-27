@@ -1,4 +1,5 @@
 export * from "./AddEventDrawer";
+export * from "./BigStatistic";
 export * from "./ContextMenu";
 export * from "./Drawer";
 export * from "./EventDrawer";

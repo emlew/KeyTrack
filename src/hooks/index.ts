@@ -1,6 +1,7 @@
 export * from "./useAdminSupabase";
 export * from "./useDrawer";
 export * from "./useEventsData";
+export * from "./useHoursData";
 export * from "./useInvalidateQueries";
 export * from "./useShiftsData";
 export * from "./useSnackbar";

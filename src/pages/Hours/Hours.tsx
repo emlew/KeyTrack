@@ -12,56 +12,35 @@ import {
 } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { useState } from "react";
-import { mockHours } from "@/utils";
+import { useHoursData } from "@/hooks";
+import dayjs from "dayjs";
 
 const filterOptions = ["All Hours", "Approved Hours", "Unapproved Hours"];
 
+const accumulateHours = (hours: any[] | null | undefined) => {
+  if (!hours || hours.length == 0) return 0;
+  return hours.map((h) => h.hours).reduce((a, b) => a + b);
+};
+
 export const Hours: React.FC = () => {
   const [filter, setFilter] = useState("All Hours");
+  const { data: hours } = useHoursData();
 
   return (
     <StyledContent>
       <StyledStatsRow>
-        <BigStatistic
-          text="Total Hours"
-          value={
-            mockHours.length > 0
-              ? mockHours.map((h) => h.hours).reduce((a, b) => a + b)
-              : 0
-          }
-        />
+        <BigStatistic text="Total Hours" value={accumulateHours(hours)} />
         <BigStatistic
           text="Approved Hours"
-          value={
-            mockHours.filter((h) => h.is_approved).length > 0
-              ? mockHours
-                  .filter((h) => h.is_approved)
-                  ?.map((h) => h.hours)
-                  .reduce((a, b) => a + b)
-              : 0
-          }
+          value={accumulateHours(hours?.filter((h) => h.is_approved))}
         />
         <BigStatistic
           text="Hours from Key Club Events"
-          value={
-            mockHours.filter((h) => h.has_event).length > 0
-              ? mockHours
-                  .filter((h) => h.has_event)
-                  ?.map((h) => h.hours)
-                  .reduce((a, b) => a + b)
-              : 0
-          }
+          value={accumulateHours(hours?.filter((h) => h.has_event))}
         />
         <BigStatistic
           text="Hours from Outside Events"
-          value={
-            mockHours.filter((h) => !h.has_event).length > 0
-              ? mockHours
-                  .filter((h) => !h.has_event)
-                  ?.map((h) => h.hours)
-                  .reduce((a, b) => a + b)
-              : 0
-          }
+          value={accumulateHours(hours?.filter((h) => !h.has_event))}
         />
       </StyledStatsRow>
       <StyledButtonRow>
@@ -77,9 +56,9 @@ export const Hours: React.FC = () => {
             label="Filter"
             onChange={(event) => setFilter(event.target.value)}
           >
-            {filterOptions.map((m) => (
-              <MenuItem key={m} value={m}>
-                {m}
+            {filterOptions.map((o) => (
+              <MenuItem key={o} value={o}>
+                {o}
               </MenuItem>
             ))}
           </Select>
@@ -87,11 +66,11 @@ export const Hours: React.FC = () => {
       </StyledButtonRow>
       <Table
         columnNames={["Hours", "Date", "Key Club Event"]}
-        isEmpty={mockHours.length == 0}
+        isEmpty={hours?.length == 0}
       >
         <TableBody>
-          {mockHours &&
-            mockHours
+          {hours &&
+            hours
               .filter((h) => {
                 if (filter === "Approved Hours") {
                   return h.is_approved;
@@ -101,14 +80,17 @@ export const Hours: React.FC = () => {
                 }
                 return true;
               })
+              .sort((a, b) => dayjs(b.date_completed).diff(a.date_completed))
               .map((h) => (
                 <TableRow key={h.id}>
                   <TableCell component="th" scope="row">
                     {h.hours}
                   </TableCell>
-                  <TableCell align="right">{h.date_completed}</TableCell>
                   <TableCell align="right">
-                    {h.has_event ? h.event_id : ""}
+                    {dayjs(h.date_completed).format("MM/DD/YYYY")}
+                  </TableCell>
+                  <TableCell align="right">
+                    {h.has_event && h.events ? h.events.name : ""}
                   </TableCell>
                 </TableRow>
               ))}

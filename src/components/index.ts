@@ -4,6 +4,7 @@ export * from "./ContextMenu";
 export * from "./Drawer";
 export * from "./EventDrawer";
 export * from "./EventListing";
+export * from "./HourDrawer";
 export * from "./Login";
 export * from "./NavBar";
 export * from "./NavBarItem";

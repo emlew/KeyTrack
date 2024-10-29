@@ -1,4 +1,4 @@
-import { BigStatistic, Table } from "@/components";
+import { BigStatistic, HourDrawer, Table } from "@/components";
 import { StyledButtonRow, StyledContent, StyledStatsRow } from "./Hours.styles";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { useState } from "react";
-import { useHoursData } from "@/hooks";
+import { useDrawer, useHoursData } from "@/hooks";
 import dayjs from "dayjs";
 
 const filterOptions = ["All Hours", "Approved Hours", "Unapproved Hours"];
@@ -23,6 +23,7 @@ const accumulateHours = (hours: any[] | null | undefined) => {
 };
 
 export const Hours: React.FC = () => {
+  const { openDrawer } = useDrawer();
   const [filter, setFilter] = useState("All Hours");
   const { data: hours } = useHoursData();
 
@@ -44,7 +45,11 @@ export const Hours: React.FC = () => {
         />
       </StyledStatsRow>
       <StyledButtonRow>
-        <Button variant="contained" endIcon={<AddRounded />}>
+        <Button
+          variant="contained"
+          endIcon={<AddRounded />}
+          onClick={() => openDrawer(<HourDrawer />)}
+        >
           Log Hours
         </Button>
         <FormControl id="filter-label" size="small">

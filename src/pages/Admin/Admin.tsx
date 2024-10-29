@@ -1,45 +1,33 @@
-import { ContextMenu, Table, Title } from "@/components";
+import {
+  ApproveHours,
+  ContextMenu,
+  GenerateReport,
+  Table,
+  Title,
+} from "@/components";
 import {
   useAdminSupabase,
   useInvalidateQueries,
   useSnackbar,
   useUserData,
 } from "@/hooks";
+import { TableBody, TableCell, TableRow } from "@mui/material";
 import {
-  TextField,
-  Button,
-  Typography,
-  TableBody,
-  TableCell,
-  TableRow,
-  Card,
-} from "@mui/material";
-import { useState } from "react";
-import { StyledActions, StyledContent, StyledPage } from "./Admin.styles";
+  StyledActions,
+  StyledActionsRow,
+  StyledContent,
+  StyledPage,
+} from "./Admin.styles";
 import AdminIcon from "@mui/icons-material/SupervisorAccountRounded";
 import DeleteIcon from "@mui/icons-material/DeleteRounded";
 import { Profile } from "@/api";
+import { AddUser } from "@/components/AddUser";
 
 export const Admin: React.FC = () => {
-  const [invitee, setInvitee] = useState("");
   const adminClient = useAdminSupabase();
   const { data: data } = useUserData(true);
   const invalidateQueries = useInvalidateQueries("users");
   const { addSnackbar } = useSnackbar();
-
-  const create = async () => {
-    // TODO: add bulk account creation option
-    const { error } = await adminClient.createUser({
-      email: invitee,
-      password: "KeyClub24",
-      email_confirm: true,
-    });
-    if (error) {
-      addSnackbar("Warning: User Creation Failed");
-    }
-    invalidateQueries();
-    addSnackbar("User Created Successfully");
-  };
 
   const assignAdminRole = async (uid: string) => {
     const { error } = await adminClient.updateUserById(uid, {
@@ -97,27 +85,11 @@ export const Admin: React.FC = () => {
       <Title title="Administrator View" />
       <StyledContent>
         <StyledActions>
-          <Card>
-            <Typography variant="h6">Create a User</Typography>
-            <TextField
-              variant="outlined"
-              label="User Email"
-              value={invitee}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setInvitee(event.target.value);
-              }}
-            />
-            <Button variant="contained" onClick={create}>
-              Create
-            </Button>
-          </Card>
-          <Card>
-            <Typography variant="h6">Generate Report</Typography>
-            <TextField variant="outlined" label="Dates" />
-            <Button variant="contained" disabled>
-              Generate
-            </Button>
-          </Card>
+          <StyledActionsRow>
+            <AddUser />
+            <GenerateReport />
+          </StyledActionsRow>
+          <ApproveHours />
         </StyledActions>
         <Table columnNames={["Email", "Role", ""]}>
           <TableBody>

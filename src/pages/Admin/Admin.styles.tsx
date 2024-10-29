@@ -21,5 +21,12 @@ export const StyledActions = styled(Box)({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
-  width: "25vw",
+  width: "70vw",
+  alignItems: "flex-start",
+});
+
+export const StyledActionsRow = styled(Box)({
+  display: "flex",
+  flexDirection: "row",
+  gap: "20px",
 });

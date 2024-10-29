@@ -76,7 +76,7 @@ export type Database = {
         Insert: {
           created_at?: string
           date_completed?: string | null
-          email: string
+          email?: string
           event_id?: number | null
           has_event: boolean
           hours: number

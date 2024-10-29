@@ -1,29 +1,33 @@
 import { ReactNode } from "react";
 import {
   StyledTable,
+  StyledTableEmpty,
   StyledTableHeadCell,
-  StyledTableHeadRow,
 } from "./Table.styles";
-import { Table as MuiTable, TableHead } from "@mui/material";
+import { Table as MuiTable, TableHead, TableRow } from "@mui/material";
 
 export const Table: React.FC<{
   children?: ReactNode;
   columnNames?: string[];
-}> = ({ children, columnNames }) => {
+  isEmpty?: boolean;
+}> = ({ children, columnNames, isEmpty }) => {
   return (
     <StyledTable>
-      <MuiTable>
+      <MuiTable stickyHeader>
         <TableHead>
-          <StyledTableHeadRow>
+          <TableRow>
             {columnNames?.map((c, i) => (
               <StyledTableHeadCell align={i == 0 ? undefined : "right"} key={c}>
                 {c}
               </StyledTableHeadCell>
             ))}
-          </StyledTableHeadRow>
+          </TableRow>
         </TableHead>
         {children}
       </MuiTable>
+      {isEmpty && (
+        <StyledTableEmpty>No data to show at this time.</StyledTableEmpty>
+      )}
     </StyledTable>
   );
 };

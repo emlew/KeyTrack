@@ -65,37 +65,44 @@ export type Database = {
         Row: {
           created_at: string
           date_completed: string | null
+          email: string
           event_id: number | null
           has_event: boolean
           hours: number
           id: number
           is_approved: boolean
           shift_id: number | null
-          user_id: string | null
         }
         Insert: {
           created_at?: string
           date_completed?: string | null
+          email?: string
           event_id?: number | null
           has_event: boolean
           hours: number
           id?: number
-          is_approved: boolean
+          is_approved?: boolean
           shift_id?: number | null
-          user_id?: string | null
         }
         Update: {
           created_at?: string
           date_completed?: string | null
+          email?: string
           event_id?: number | null
           has_event?: boolean
           hours?: number
           id?: number
           is_approved?: boolean
           shift_id?: number | null
-          user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "hours_email_fkey"
+            columns: ["email"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["email"]
+          },
           {
             foreignKeyName: "hours_event_id_fkey"
             columns: ["event_id"]
@@ -108,13 +115,6 @@ export type Database = {
             columns: ["shift_id"]
             isOneToOne: false
             referencedRelation: "shifts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "hours_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -144,7 +144,7 @@ export type Database = {
         Row: {
           created_at: string
           end_time: string | null
-          event_id: number | null
+          event_id: number
           id: number
           is_full: boolean | null
           start_time: string | null
@@ -153,7 +153,7 @@ export type Database = {
         Insert: {
           created_at?: string
           end_time?: string | null
-          event_id?: number | null
+          event_id: number
           id?: number
           is_full?: boolean | null
           start_time?: string | null
@@ -162,7 +162,7 @@ export type Database = {
         Update: {
           created_at?: string
           end_time?: string | null
-          event_id?: number | null
+          event_id?: number
           id?: number
           is_full?: boolean | null
           start_time?: string | null
@@ -182,23 +182,23 @@ export type Database = {
         Row: {
           created_at: string
           email: string
+          event_id: number
           id: number
           shift: number
-          event_id: number
         }
         Insert: {
           created_at?: string
           email?: string
+          event_id: number
           id?: number
           shift: number
-          event_id: number
         }
         Update: {
           created_at?: string
           email?: string
+          event_id?: number
           id?: number
           shift?: number
-          event_id?: number
         }
         Relationships: [
           {
@@ -207,6 +207,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["email"]
+          },
+          {
+            foreignKeyName: "workers_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "workers_shift_fkey"
@@ -222,6 +229,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_user_is_admin: {
+        Args: {
+          user_email: string
+        }
+        Returns: boolean
+      }
       get_workers_by_event: {
         Args: {
           event: number
@@ -231,6 +244,7 @@ export type Database = {
           created_at: string
           email: string
           shift: number
+          event_id: number
         }[]
       }
       manage_workers_by_shifts: {
@@ -330,4 +344,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

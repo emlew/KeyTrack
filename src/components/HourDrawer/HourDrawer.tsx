@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Drawer } from "../Drawer";
-import { useDrawer, useEventsData } from "@/hooks";
+import { useCreateHours, useDrawer, useEventsData } from "@/hooks";
 import { HourCreate } from "@/api";
 import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -18,6 +18,7 @@ import { StyledDrawerContent } from "./HourDrawer.styles";
 export const HourDrawer: React.FC = () => {
   const { closeDrawer } = useDrawer();
   const { data: events } = useEventsData();
+  const { mutate: createHour } = useCreateHours();
   const [hour, setHour] = useState<HourCreate>({
     date_completed: dayjs().toString(),
     event_id: null,
@@ -71,7 +72,7 @@ export const HourDrawer: React.FC = () => {
   };
 
   const handleConfirm = () => {
-    // TODO: add mutation
+    createHour(hour);
     closeDrawer();
   };
 

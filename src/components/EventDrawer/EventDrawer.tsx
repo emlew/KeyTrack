@@ -6,11 +6,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Drawer } from "../Drawer";
-import { useDrawer, useShiftsData, useWorkersByEventData } from "@/hooks";
+import {
+  useDrawer,
+  useShiftsData,
+  useSyncWorkers,
+  useWorkersByEventData,
+} from "@/hooks";
 import dayjs from "dayjs";
 import { Shift } from "@/api";
 import { useEffect, useState } from "react";
-import { useSyncWorkers } from "@/hooks/useSyncWorkers";
 
 type SignUp = "sign-up" | "edit";
 

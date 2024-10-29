@@ -1,4 +1,6 @@
 export * from "./useAdminSupabase";
+export * from "./useCreateEvent";
+export * from "./useCreateHours";
 export * from "./useDrawer";
 export * from "./useEventsData";
 export * from "./useHoursData";
@@ -6,6 +8,7 @@ export * from "./useInvalidateQueries";
 export * from "./useShiftsData";
 export * from "./useSnackbar";
 export * from "./useSupabase";
+export * from "./useSyncWorkers";
 export * from "./useUserData";
 export * from "./useWorkersByEventData";
 export * from "./useWorkersData";

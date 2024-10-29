@@ -1,18 +1,18 @@
 import { TextField } from "@mui/material";
 import { Drawer } from "../Drawer";
-import { useDrawer } from "@/hooks";
+import { useCreateEvent, useDrawer } from "@/hooks";
 import { useState } from "react";
 import { StyledDetails, StyledDrawerContent } from "./AddEventDrawer.styles";
 import { AddShifts } from "../AddShifts";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { useCreateEvent } from "@/hooks/useCreateEvent";
 import { ShiftCreate } from "@/api";
 
 const combineDateTimes = (date: Dayjs, shifts: ShiftCreate[]) => {
   const updatedShifts: ShiftCreate[] = [];
   for (let s of shifts) {
     updatedShifts.push({
+      event_id: -1,
       start_time: dayjs(
         `${date.format("YYYY-MM-DD")}T${dayjs(s.start_time).format("HH:mm:ss")}`
       ).toISOString(),

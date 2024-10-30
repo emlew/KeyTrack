@@ -1,6 +1,6 @@
 import { Button, Card, TextField, Typography } from "@mui/material";
 
-export const GenerateReport: React.FC = () => {
+export const AdminReports: React.FC = () => {
   return (
     <Card>
       <Typography variant="h6">Generate Report</Typography>
@@ -11,5 +11,3 @@ export const GenerateReport: React.FC = () => {
     </Card>
   );
 };
-
-export default GenerateReport;

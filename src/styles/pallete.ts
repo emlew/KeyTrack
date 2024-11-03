@@ -40,6 +40,14 @@ export const palette: PaletteOptions = {
   secondary: {
     main: colors.white,
   },
+  success: {
+    main: "#65BC7B",
+    "300": "#90D39E",
+  },
+  error: {
+    main: "#DA3842",
+    "300": "#F26868",
+  },
   text: {
     primary: colors.primary800,
   },

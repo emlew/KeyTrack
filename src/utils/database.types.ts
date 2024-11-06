@@ -247,6 +247,13 @@ export type Database = {
           event_id: number
         }[]
       }
+      manage_hours: {
+        Args: {
+          hours_to_approve: number[]
+          hours_to_delete: number[]
+        }
+        Returns: undefined
+      }
       manage_workers_by_shifts: {
         Args: {
           shifts_to_add: number[]

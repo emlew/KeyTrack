@@ -8,6 +8,7 @@ export * from "./EventListing";
 export * from "./HourDrawer";
 export * from "./HoursTable";
 export * from "./Login";
+export * from "./Modal";
 export * from "./NavBar";
 export * from "./NavBarItem";
 export * from "./SendResetPassword";

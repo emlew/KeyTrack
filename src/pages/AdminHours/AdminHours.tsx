@@ -1,6 +1,6 @@
 import { Hour } from "@/api";
 import { HoursTable } from "@/components";
-import { useEventsData, useHoursData } from "@/hooks";
+import { useEventsData, useHoursData, useModal, useUpdateHours } from "@/hooks";
 import {
   InputLabel,
   Box,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { StyledChoices, StyledPage, StyledTableBox } from "./AdminHours.styles";
+import { ApproveHoursModal } from "@/components/ApproveHoursModal";
 
 export const AdminHours: React.FC = () => {
   const { data: hours } = useHoursData(true);
@@ -19,6 +20,8 @@ export const AdminHours: React.FC = () => {
   const [event, setEvent] = useState<number>(-1);
   const [approved, setApproved] = useState<Hour[]>([]);
   const [disproved, setDisproved] = useState<Hour[]>([]);
+  const { mutate } = useUpdateHours();
+  const { openModal } = useModal();
 
   const handleUndo = (hour: Hour) => {
     setApproved((prev) => prev.filter((h) => h != hour));
@@ -31,12 +34,32 @@ export const AdminHours: React.FC = () => {
     if (event == -1) return !hour.has_event;
     return hour.event_id == event;
   };
+
   const handleFilterChange = (event: SelectChangeEvent<number>) => {
     typeof event.target.value == "number"
       ? setEvent(event.target.value)
       : setEvent(parseInt(event.target.value));
     setApproved([]);
     setDisproved([]);
+  };
+
+  const saveFn = () => {
+    mutate({
+      approve: approved.map((h) => h.id),
+      deny: disproved.map((h) => h.id),
+    });
+    setApproved([]);
+    setDisproved([]);
+  };
+
+  const handleSave = () => {
+    openModal(
+      <ApproveHoursModal
+        approved={approved}
+        denied={disproved}
+        onSave={saveFn}
+      />
+    );
   };
 
   return (
@@ -73,14 +96,21 @@ export const AdminHours: React.FC = () => {
             hours={approved}
             hasUndoButton={true}
             handleUndo={(h) => handleUndo(h)}
+            variant="green"
           />
           <Typography>Hours to Deny</Typography>
           <HoursTable
             hours={disproved}
             hasUndoButton={true}
             handleUndo={(h) => handleUndo(h)}
+            variant="red"
           />
-          <Button variant="contained" sx={{ alignSelf: "flex-start" }}>
+          <Button
+            variant="contained"
+            sx={{ alignSelf: "flex-start" }}
+            onClick={handleSave}
+            disabled={approved.length == 0 && disproved.length == 0}
+          >
             Save Changes
           </Button>
         </StyledChoices>

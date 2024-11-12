@@ -7,7 +7,8 @@ export const StyledTable = styled(TableContainer)({
   border: `1px solid ${theme.palette.primary[800]}`,
   boxShadow: "none",
   width: "100%",
-  maxHeight: "100%"
+  maxHeight: "100%",
+  alignSelf: "stretch",
 });
 
 export const StyledTableHeadCell = styled(TableCell)({
@@ -19,5 +20,4 @@ export const StyledTableEmpty = styled(Typography)({
   width: "100%",
   textAlign: "center",
   padding: "20px",
-  backgroundColor: theme.palette.primary[50],
 });

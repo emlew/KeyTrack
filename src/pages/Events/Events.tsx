@@ -1,5 +1,5 @@
 import { AddEventDrawer, EventDrawer, EventListing } from "@/components";
-import { useDrawer, useEventsData } from "@/hooks";
+import { useDrawer, useEventsData, useUserData } from "@/hooks";
 import { StyledCard, StyledEventsTitle, StyledPage } from "./Events.styles";
 import {
   Button,
@@ -14,9 +14,11 @@ import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { months } from "@/utils";
 import { AddRounded } from "@mui/icons-material";
+import { Profile } from "@/api";
 
 export const Events: React.FC = () => {
   const { data: events } = useEventsData();
+  const { data: user } = useUserData();
   const { openDrawer } = useDrawer();
 
   const [monthFilter, setMonthFilter] = useState(dayjs().month().toString());
@@ -69,13 +71,15 @@ export const Events: React.FC = () => {
               ))}
             </Select>
           </FormControl>
-          <Button
-            variant="contained"
-            onClick={() => openDrawer(<AddEventDrawer />)}
-            endIcon={<AddRounded />}
-          >
-            Create Event
-          </Button>
+          {(user as Profile)?.is_admin && (
+            <Button
+              variant="contained"
+              onClick={() => openDrawer(<AddEventDrawer />)}
+              endIcon={<AddRounded />}
+            >
+              Create Event
+            </Button>
+          )}
         </StyledEventsTitle>
         {filteredEvents?.map((e) => (
           <EventListing

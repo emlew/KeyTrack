@@ -3,6 +3,7 @@ import {
   useAdminSupabase,
   useInvalidateQueries,
   useSnackbar,
+  useUpdateUserRole,
   useUserData,
 } from "@/hooks";
 import {
@@ -23,31 +24,17 @@ import { useState } from "react";
 export const AdminUsers: React.FC = () => {
   const adminClient = useAdminSupabase();
   const { data: data } = useUserData(true);
+  const { mutate } = useUpdateUserRole();
   const invalidateQueries = useInvalidateQueries("users");
   const { addSnackbar } = useSnackbar();
   const [invitee, setInvitee] = useState("");
 
-  const assignAdminRole = async (uid: string) => {
-    const { error } = await adminClient.updateUserById(uid, {
-      role: "kt_admin",
-    });
-    if (error) {
-      addSnackbar("Warning: Admin Role Assignment Failed");
-    } else {
-      invalidateQueries();
-      addSnackbar("Admin Role Assigned Successfully");
-    }
+  const assignAdminRole = async (email: string) => {
+    mutate({ email, is_admin: true });
   };
 
-  const removeAdminRole = async (uid: string) => {
-    const { error } = await adminClient.updateUserById(uid, {
-      role: "authenticated",
-    });
-    if (error) {
-      addSnackbar("Warning: Admin Role Removal Failed");
-    }
-    invalidateQueries();
-    addSnackbar("Admin Role Removed Successfully");
+  const removeAdminRole = async (email: string) => {
+    mutate({ email, is_admin: false });
   };
 
   const deleteUser = async (uid: string) => {
@@ -79,7 +66,6 @@ export const AdminUsers: React.FC = () => {
   ];
 
   const create = async () => {
-    // TODO: add bulk account creation option
     const { error } = await adminClient.createUser({
       email: invitee,
       password: "KeyClub24",
@@ -121,7 +107,7 @@ export const AdminUsers: React.FC = () => {
                 </TableCell>
                 <TableCell align="center">
                   <ContextMenu
-                    id={user.id.toString()}
+                    id={user.email}
                     items={ContextMenuItems.filter((i) => {
                       if (user.is_admin) return i.title !== "Make Admin";
                       else return i.title != "Remove Admin";

@@ -11,6 +11,7 @@ export * from "./useSnackbar";
 export * from "./useSupabase";
 export * from "./useSyncWorkers";
 export * from "./useUpdateHours";
+export * from "./useUpdateUserRole";
 export * from "./useUserData";
 export * from "./useWorkersByEventData";
 export * from "./useWorkersData";

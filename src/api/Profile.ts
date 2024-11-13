@@ -1,6 +1,6 @@
 export type Profile = {
-    created_at: string
+    created_at?: string
     email: string
-    id: number
+    id?: number
     is_admin: boolean
 }

@@ -3,6 +3,7 @@ export * from "./useCreateEvent";
 export * from "./useCreateHours";
 export * from "./useDrawer";
 export * from "./useEventsData";
+export * from "./useGenerateReport";
 export * from "./useHoursData";
 export * from "./useInvalidateQueries";
 export * from "./useModal";

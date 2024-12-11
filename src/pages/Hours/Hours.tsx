@@ -1,6 +1,7 @@
 import { BigStatistic, HourDrawer, Table } from "@/components";
 import { StyledButtonRow, StyledContent, StyledStatsRow } from "./Hours.styles";
 import {
+  Box,
   Button,
   FormControl,
   InputLabel,
@@ -10,9 +11,14 @@ import {
   TableCell,
   TableRow,
 } from "@mui/material";
-import { AddRounded } from "@mui/icons-material";
+import { AddRounded, DownloadRounded } from "@mui/icons-material";
 import { useState } from "react";
-import { useDrawer, useHoursData } from "@/hooks";
+import {
+  useDrawer,
+  useGenerateReport,
+  useHoursData,
+  useUserData,
+} from "@/hooks";
 import dayjs from "dayjs";
 
 const filterOptions = ["All Hours", "Approved Hours", "Unapproved Hours"];
@@ -26,6 +32,8 @@ export const Hours: React.FC = () => {
   const { openDrawer } = useDrawer();
   const [filter, setFilter] = useState("All Hours");
   const { data: hours } = useHoursData();
+  const generate = useGenerateReport();
+  const { data: user } = useUserData();
 
   return (
     <StyledContent>
@@ -45,13 +53,22 @@ export const Hours: React.FC = () => {
         />
       </StyledStatsRow>
       <StyledButtonRow>
-        <Button
-          variant="contained"
-          endIcon={<AddRounded />}
-          onClick={() => openDrawer(<HourDrawer />)}
-        >
-          Log Hours
-        </Button>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+          <Button
+            variant="contained"
+            endIcon={<AddRounded />}
+            onClick={() => openDrawer(<HourDrawer />)}
+          >
+            Log Hours
+          </Button>
+          <Button
+            variant="contained"
+            endIcon={<DownloadRounded />}
+            onClick={() => generate(user.email ?? "", hours?.filter((h) => h.is_approved) ?? [])}
+          >
+            Generate Report
+          </Button>
+        </Box>
         <FormControl id="filter-label" size="small">
           <InputLabel id="filter-label">Hours</InputLabel>
           <Select

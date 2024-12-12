@@ -1,16 +1,23 @@
 import { ReactNode } from "react";
 import {
+  StyledLoaderBox,
   StyledTable,
   StyledTableEmpty,
   StyledTableHeadCell,
 } from "./Table.styles";
-import { Table as MuiTable, TableHead, TableRow } from "@mui/material";
+import {
+  CircularProgress,
+  Table as MuiTable,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 export const Table: React.FC<{
   children?: ReactNode;
   columnNames?: string[];
   isEmpty?: boolean;
-}> = ({ children, columnNames, isEmpty }) => {
+  isLoading?: boolean;
+}> = ({ children, columnNames, isEmpty, isLoading }) => {
   return (
     <StyledTable>
       <MuiTable stickyHeader>
@@ -23,8 +30,13 @@ export const Table: React.FC<{
             ))}
           </TableRow>
         </TableHead>
-        {children}
+        {!isLoading && children}
       </MuiTable>
+      {isLoading && (
+        <StyledLoaderBox>
+          <CircularProgress />
+        </StyledLoaderBox>
+      )}
       {isEmpty && (
         <StyledTableEmpty>No data to show at this time.</StyledTableEmpty>
       )}

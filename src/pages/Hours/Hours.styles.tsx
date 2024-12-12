@@ -15,7 +15,8 @@ export const StyledContent = styled(Box)({
   flexDirection: "column",
   gap: "40px",
   alignItems: "flex-start",
-  height: "100%"
+  height: "100%",
+  justifyContent: "stretch"
 });
 
 export const StyledButtonRow = styled(Box)({

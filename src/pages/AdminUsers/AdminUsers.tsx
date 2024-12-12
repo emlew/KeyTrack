@@ -23,7 +23,7 @@ import { useState } from "react";
 
 export const AdminUsers: React.FC = () => {
   const adminClient = useAdminSupabase();
-  const { data: data } = useUserData(true);
+  const { data: data, isLoading } = useUserData(true);
   const { mutate } = useUpdateUserRole();
   const invalidateQueries = useInvalidateQueries("users");
   const { addSnackbar } = useSnackbar();
@@ -94,7 +94,7 @@ export const AdminUsers: React.FC = () => {
           Create
         </Button>
       </Card>
-      <Table columnNames={["Email", "Role", ""]}>
+      <Table columnNames={["Email", "Role", ""]} isLoading={isLoading}>
         <TableBody>
           {data &&
             (data as Profile[]).map((user) => (

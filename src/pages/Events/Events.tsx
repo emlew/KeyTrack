@@ -25,12 +25,16 @@ export const Events: React.FC = () => {
 
   const filteredEvents = useMemo(() => {
     return events?.data?.filter(
-      (e) => dayjs(e.time).month().toString() == monthFilter
+      (e) =>
+        dayjs(e.time).month().toString() == monthFilter &&
+        dayjs(e.time).isAfter(dayjs())
     );
   }, [events, monthFilter]);
 
   const signedEvents = useMemo(() => {
-    return events?.data?.filter((e) => e.workers.length > 0);
+    return events?.data?.filter(
+      (e) => e.workers.length > 0 && dayjs(e.time).isAfter(dayjs())
+    );
   }, [events]);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
@@ -40,7 +44,7 @@ export const Events: React.FC = () => {
   return (
     <StyledPage>
       <StyledCard>
-        <Typography variant="h4">Your Events</Typography>
+        <Typography variant="h4">Your Upcoming Events</Typography>
         {signedEvents?.map((e) => (
           <EventListing
             key={e.id}

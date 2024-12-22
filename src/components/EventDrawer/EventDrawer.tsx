@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   FormGroup,
   Typography,
@@ -56,7 +57,7 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
       title={variant === "sign-up" ? "Sign Up" : "Edit Sign Up"}
       onConfirm={handleConfirm}
     >
-      {!isLoading && !isLoadingWorkers && (
+      {!isLoading && !isLoadingWorkers && id == event?.id ? (
         <>
           <Box>
             <Typography variant="h5">{event?.name}</Typography>
@@ -92,6 +93,8 @@ export const EventDrawer: React.FC<{ variant: SignUp; id: number }> = ({
               ))}
           </FormGroup>
         </>
+      ) : (
+        <CircularProgress sx={{ margin: "auto" }} />
       )}
     </Drawer>
   );

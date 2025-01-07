@@ -7,6 +7,7 @@ export const Snackbar: React.FC<{ message: string }> = ({ message }) => {
   return (
     <MuiSnackbar
       open={true}
+      autoHideDuration={5000}
       onClose={removeSnackbar}
       message={message}
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

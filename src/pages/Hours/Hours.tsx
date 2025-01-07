@@ -31,7 +31,7 @@ const accumulateHours = (hours: any[] | null | undefined) => {
 export const Hours: React.FC = () => {
   const { openDrawer } = useDrawer();
   const [filter, setFilter] = useState("All Hours");
-  const { data: hours } = useHoursData();
+  const { data: hours, isLoading } = useHoursData();
   const generate = useGenerateReport();
   const { data: user } = useUserData();
 
@@ -64,7 +64,12 @@ export const Hours: React.FC = () => {
           <Button
             variant="contained"
             endIcon={<DownloadRounded />}
-            onClick={() => generate(user.email ?? "", hours?.filter((h) => h.is_approved) ?? [])}
+            onClick={() =>
+              generate(
+                user.email ?? "",
+                hours?.filter((h) => h.is_approved) ?? []
+              )
+            }
           >
             Generate Report
           </Button>
@@ -89,6 +94,7 @@ export const Hours: React.FC = () => {
       <Table
         columnNames={["Hours", "Date", "Key Club Event"]}
         isEmpty={hours?.length == 0}
+        isLoading={isLoading}
       >
         <TableBody>
           {hours &&

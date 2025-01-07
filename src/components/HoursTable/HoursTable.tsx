@@ -22,6 +22,7 @@ export const HoursTable: React.FC<{
   handleApprove?: (h: Hour) => void;
   handleDeny?: (h: Hour) => void;
   variant?: TableVariant;
+  isLoading?: boolean;
 }> = ({
   hours,
   hasUndoButton = false,
@@ -29,9 +30,10 @@ export const HoursTable: React.FC<{
   handleApprove = (_) => {},
   handleDeny = (_) => {},
   variant = "default",
+  isLoading
 }) => {
   return (
-    <Table columnNames={["Email", "Hours", ""]} isEmpty={hours.length == 0}>
+    <Table isLoading={isLoading} columnNames={["Email", "Hours", ""]} isEmpty={hours.length == 0}>
       <TableBody>
         {hours.map((h) => (
           <TableRow key={h.id} sx={{ backgroundColor: getColor(variant) }}>

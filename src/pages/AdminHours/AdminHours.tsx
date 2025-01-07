@@ -15,7 +15,7 @@ import { StyledChoices, StyledPage, StyledTableBox } from "./AdminHours.styles";
 import { ApproveHoursModal } from "@/components/ApproveHoursModal";
 
 export const AdminHours: React.FC = () => {
-  const { data: hours } = useHoursData(true);
+  const { data: hours, isLoading } = useHoursData(true);
   const { data: events } = useEventsData();
   const [event, setEvent] = useState<number>(-1);
   const [approved, setApproved] = useState<Hour[]>([]);
@@ -86,6 +86,7 @@ export const AdminHours: React.FC = () => {
       </Box>
       <StyledTableBox>
         <HoursTable
+          isLoading={isLoading}
           hours={hours?.filter((h) => filterHours(h)) ?? []}
           handleApprove={(h) => setApproved((prev) => [...prev, h])}
           handleDeny={(h) => setDisproved((prev) => [...prev, h])}

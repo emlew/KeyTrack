@@ -2,11 +2,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useSupabase } from "./useSupabase";
 import { useInvalidateQueries } from "./useInvalidateQueries";
 import { Profile } from "@/api";
+import { useSnackbar } from "./useSnackbar";
 
 export const useUpdateUserRole = () => {
   const client = useSupabase();
   const mutationKey = ["update_user_role"];
   const invalidateQueries = useInvalidateQueries();
+  const { addSnackbar } = useSnackbar();
 
   const mutationFn = async (user: Profile) => {
     return await client
@@ -19,6 +21,16 @@ export const useUpdateUserRole = () => {
   return useMutation({
     mutationKey,
     mutationFn,
-    onSuccess: invalidateQueries,
+    onSuccess: (r) => {
+      invalidateQueries();
+      if (r.error) {
+        addSnackbar("Something went wrong.");
+        return;
+      }
+      addSnackbar("User successfully updated");
+    },
+    onError: () => {
+      addSnackbar("Something went wrong.");
+    },
   });
 };

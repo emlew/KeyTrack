@@ -1,11 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { useSupabase } from "./useSupabase";
 import { useInvalidateQueries } from "./useInvalidateQueries";
+import { useSnackbar } from "./useSnackbar";
 
 export const useUpdateHours = () => {
   const client = useSupabase();
   const mutationKey = ["update_hours"];
   const invalidateQueries = useInvalidateQueries();
+  const { addSnackbar } = useSnackbar();
 
   const mutationFn = async ({
     approve,
@@ -23,6 +25,16 @@ export const useUpdateHours = () => {
   return useMutation({
     mutationKey,
     mutationFn,
-    onSuccess: invalidateQueries,
+    onSuccess: (r) => {
+      invalidateQueries();
+      if (r.error) {
+        addSnackbar("Something went wrong.");
+        return;
+      }
+      addSnackbar("Hours successfully updated");
+    },
+    onError: () => {
+      addSnackbar("Something went wrong.");
+    },
   });
 };

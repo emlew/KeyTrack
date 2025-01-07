@@ -29,9 +29,16 @@ export const useCreateEvent = (event: EventCreate, shifts: ShiftCreate[]) => {
   return useMutation({
     mutationKey,
     mutationFn,
-    onSuccess: () => {
+    onSuccess: (r) => {
       invalidateQueries();
+      if (r.error) {
+        addSnackbar("Something went wrong.");
+        return;
+      }
       addSnackbar("Event successfully created");
+    },
+    onError: () => {
+      addSnackbar("Something went wrong.");
     },
   });
 };

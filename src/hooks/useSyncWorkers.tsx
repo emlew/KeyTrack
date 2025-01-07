@@ -19,9 +19,16 @@ export const useSyncWorkers = (prevWorkers: number[], newWorkers: number[]) => {
   return useMutation({
     mutationKey,
     mutationFn,
-    onSuccess: () => {
+    onSuccess: (r) => {
       invalidateQueries();
+      if (r.error) {
+        addSnackbar("Something went wrong.");
+        return;
+      }
       addSnackbar("Signup successfully updated");
+    },
+    onError: () => {
+      addSnackbar("Something went wrong.");
     },
   });
 };

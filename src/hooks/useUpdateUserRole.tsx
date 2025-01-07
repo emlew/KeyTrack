@@ -21,9 +21,16 @@ export const useUpdateUserRole = () => {
   return useMutation({
     mutationKey,
     mutationFn,
-    onSuccess: () => {
+    onSuccess: (r) => {
       invalidateQueries();
+      if (r.error) {
+        addSnackbar("Something went wrong.");
+        return;
+      }
       addSnackbar("User successfully updated");
+    },
+    onError: () => {
+      addSnackbar("Something went wrong.");
     },
   });
 };

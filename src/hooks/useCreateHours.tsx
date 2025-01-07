@@ -17,9 +17,16 @@ export const useCreateHours = () => {
   return useMutation({
     mutationKey,
     mutationFn,
-    onSuccess: () => {
+    onSuccess: (r) => {
       invalidateQueries();
+      if (r.error) {
+        addSnackbar("Something went wrong.");
+        return;
+      }
       addSnackbar("Hours successfully logged");
+    },
+    onError: () => {
+      addSnackbar("Something went wrong.");
     },
   });
 };
